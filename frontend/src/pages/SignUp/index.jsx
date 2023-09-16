@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 export function SignUp() {
@@ -5,6 +6,18 @@ export function SignUp() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [repeatPassword, setRepeatPassword] = useState();
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+    axios.post("http://localhost:8080/api/v1/users", {
+      //   username: username,
+      //   email: email,
+      //   password: password,
+      username,
+      email,
+      password,
+    });
+  };
 
   return (
     <>
@@ -18,7 +31,7 @@ export function SignUp() {
                     <h2 className="text-uppercase text-center mb-5">
                       Create An Account
                     </h2>
-                    <form action="#">
+                    <form onSubmit={onSubmit}>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="username">
                           Username
@@ -66,13 +79,12 @@ export function SignUp() {
                         />
                       </div>
                       <div className="d-flex justify-content-center">
-                        <button
-                          type="button"
+                        <input
+                          value="Register"
+                          type="submit"
                           className="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
                           disabled={!password || password !== repeatPassword}
-                        >
-                          Register
-                        </button>
+                        />
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
                         Have already an account?
