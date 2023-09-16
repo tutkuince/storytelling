@@ -78,16 +78,16 @@ export function SignUp() {
                           }
                         />
                       </div>
-                      <div className="d-flex justify-content-center">
+                      <div className="d-grid gap-2">
                         <input
                           value="Register"
                           type="submit"
-                          className="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
+                          className="btn btn-outline-dark"
                           disabled={!password || password !== repeatPassword}
                         />
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
-                        Have already an account?
+                        Have already an account? &nbsp;
                         <a href="#!" className="fw-bold text-body">
                           <u>Login here</u>
                         </a>
