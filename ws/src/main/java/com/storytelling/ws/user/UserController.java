@@ -1,5 +1,6 @@
 package com.storytelling.ws.user;
 
+import com.storytelling.ws.shared.GenericMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,8 @@ public class UserController {
     }
 
     @PostMapping("/v1/users")
-    public void createUser(@RequestBody User user) {
+    public GenericMessage createUser(@RequestBody User user) {
         userService.createUser(user);
+        return new GenericMessage("User is created");
     }
 }
