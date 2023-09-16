@@ -6,17 +6,26 @@ export function SignUp() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [repeatPassword, setRepeatPassword] = useState();
+  const [apiProgress, setApiProgress] = useState();
+  const [successMessage, setSuccessMessage] = useState();
 
   const onSubmit = (event) => {
     event.preventDefault();
-    axios.post("/api/v1/users", {
-      //   username: username,
-      //   email: email,
-      //   password: password,
-      username,
-      email,
-      password,
-    });
+    setApiProgress(true);
+    setSuccessMessage();
+    axios
+      .post("/api/v1/users", {
+        //   username: username,
+        //   email: email,
+        //   password: password,
+        username,
+        email,
+        password,
+      })
+      .then((response) => {
+        setSuccessMessage(response.data.message);
+      })
+      .finally(() => setApiProgress(false));
   };
 
   return (
@@ -27,10 +36,12 @@ export function SignUp() {
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-12 col-md-9 col-lg-7 col-xl-6">
                 <div className="card">
-                  <div className="card-body p-5">
-                    <h2 className="text-uppercase text-center mb-5">
+                  <div className="card-header">
+                    <h2 className="text-uppercase text-center py-3">
                       Create An Account
                     </h2>
+                  </div>
+                  <div className="card-body p-5">
                     <form onSubmit={onSubmit}>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="username">
@@ -78,13 +89,29 @@ export function SignUp() {
                           }
                         />
                       </div>
+                      {successMessage && (
+                        <div className="alert alert-success" role="alert">
+                          {successMessage}
+                        </div>
+                      )}
                       <div className="d-grid gap-2">
-                        <input
-                          value="Register"
+                        <button
                           type="submit"
                           className="btn btn-outline-dark"
-                          disabled={!password || password !== repeatPassword}
-                        />
+                          disabled={
+                            apiProgress ||
+                            !password ||
+                            password !== repeatPassword
+                          }
+                        >
+                          {apiProgress && (
+                            <span
+                              className="spinner-border spinner-border-sm"
+                              aria-hidden="true"
+                            ></span>
+                          )}
+                          Register
+                        </button>
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
                         Have already an account? &nbsp;
