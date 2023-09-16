@@ -1,4 +1,11 @@
+import { useState } from "react";
+
 export function SignUp() {
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [repeatPassword, setRepeatPassword] = useState();
+
   return (
     <>
       <section className="vh-100">
@@ -20,6 +27,7 @@ export function SignUp() {
                           type="text"
                           id="username"
                           className="form-control form-control-lg"
+                          onChange={(event) => setUsername(event.target.value)}
                         />
                       </div>
                       <div className="form-outline mb-4">
@@ -30,6 +38,7 @@ export function SignUp() {
                           type="email"
                           id="email"
                           className="form-control form-control-lg"
+                          onChange={(event) => setEmail(event.target.value)}
                         />
                       </div>
                       <div className="form-outline mb-4">
@@ -40,6 +49,7 @@ export function SignUp() {
                           type="password"
                           id="password"
                           className="form-control form-control-lg"
+                          onChange={(event) => setPassword(event.target.value)}
                         />
                       </div>
                       <div className="form-outline mb-4">
@@ -50,18 +60,22 @@ export function SignUp() {
                           type="password"
                           id="repeatPassword"
                           className="form-control form-control-lg"
+                          onChange={(event) =>
+                            setRepeatPassword(event.target.value)
+                          }
                         />
                       </div>
                       <div className="d-flex justify-content-center">
                         <button
                           type="button"
                           className="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
+                          disabled={!password || password !== repeatPassword}
                         >
                           Register
                         </button>
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
-                        Have already an account?{" "}
+                        Have already an account?
                         <a href="#!" className="fw-bold text-body">
                           <u>Login here</u>
                         </a>
