@@ -7,9 +7,9 @@ export function SignUp() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [repeatPassword, setRepeatPassword] = useState();
-  const [apiProgress, setApiProgress] = useState();
+  const [apiProgress, setApiProgress] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState({});
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -27,7 +27,7 @@ export function SignUp() {
       });
       setSuccessMessage(response.data.message);
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage(error.response.data.validationErrors);
     } finally {
       setApiProgress(false);
     }
