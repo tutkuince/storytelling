@@ -31,6 +31,15 @@ export function SignUp() {
     });
   }, [email]);
 
+  useEffect(() => {
+    setErrorMessage((lastErrors) => {
+      return {
+        ...lastErrors,
+        password: undefined,
+      };
+    });
+  }, [password]);
+
   const onSubmit = async (event) => {
     event.preventDefault();
     setApiProgress(true);
@@ -87,17 +96,13 @@ export function SignUp() {
                         error={errorMessage.email}
                         onChange={(event) => setEmail(event.target.value)}
                       />
-                      <div className="form-outline mb-4">
-                        <label className="form-label" htmlFor="password">
-                          Password
-                        </label>
-                        <input
-                          type="password"
-                          id="password"
-                          className="form-control form-control-lg"
-                          onChange={(event) => setPassword(event.target.value)}
-                        />
-                      </div>
+                      <Input
+                        id="password"
+                        label="Password"
+                        type="password"
+                        error={errorMessage.password}
+                        onChange={(event) => setPassword(event.target.value)}
+                      />
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="repeatPassword">
                           Repeat Your Password
