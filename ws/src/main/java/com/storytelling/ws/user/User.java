@@ -1,6 +1,7 @@
 package com.storytelling.ws.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
@@ -9,8 +10,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username", unique = true)
+    @NotBlank
     private String username;
     @Column(name = "email", unique = true)
+    @NotBlank
     private String email;
     @Column(name = "password")
     private String password;
