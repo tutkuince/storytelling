@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { signUp } from "./api";
+import { Input } from "./components/input";
 
 export function SignUp() {
   const [username, setUsername] = useState();
@@ -13,8 +14,22 @@ export function SignUp() {
   const [generalError, setGeneralError] = useState();
 
   useEffect(() => {
-    setErrorMessage({});
+    setErrorMessage((lastErrors) => {
+      return {
+        ...lastErrors,
+        username: undefined,
+      };
+    });
   }, [username]);
+
+  useEffect(() => {
+    setErrorMessage((lastErrors) => {
+      return {
+        ...lastErrors,
+        email: undefined,
+      };
+    });
+  }, [email]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -58,35 +73,20 @@ export function SignUp() {
                   </div>
                   <div className="card-body p-5">
                     <form onSubmit={onSubmit}>
-                      <div className="form-outline mb-4">
-                        <label className="form-label" htmlFor="username">
-                          Username
-                        </label>
-                        <input
-                          type="text"
-                          id="username"
-                          className={
-                            errorMessage.username
-                              ? "form-control form-control-lg is-invalid"
-                              : "form-control form-control-lg"
-                          }
-                          onChange={(event) => setUsername(event.target.value)}
-                        />
-                        <div className="invalid-feedback">
-                          {errorMessage.username}
-                        </div>
-                      </div>
-                      <div className="form-outline mb-4">
-                        <label className="form-label" htmlFor="email">
-                          E-Mail
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          className="form-control form-control-lg"
-                          onChange={(event) => setEmail(event.target.value)}
-                        />
-                      </div>
+                      <Input
+                        id="username"
+                        label="Username"
+                        type="text"
+                        error={errorMessage.username}
+                        onChange={(event) => setUsername(event.target.value)}
+                      />
+                      <Input
+                        id="email"
+                        label="E-Mail"
+                        type="email"
+                        error={errorMessage.email}
+                        onChange={(event) => setEmail(event.target.value)}
+                      />
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="password">
                           Password
