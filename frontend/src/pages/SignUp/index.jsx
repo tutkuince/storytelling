@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { signUp } from "./api";
 
 export function SignUp() {
@@ -10,6 +10,10 @@ export function SignUp() {
   const [apiProgress, setApiProgress] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
   const [errorMessage, setErrorMessage] = useState({});
+
+  useEffect(() => {
+    setErrorMessage({});
+  }, [username]);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -27,7 +31,9 @@ export function SignUp() {
       });
       setSuccessMessage(response.data.message);
     } catch (error) {
-      setErrorMessage(error.response.data.validationErrors);
+      if (error.response?.data && error.response.data.status == 400) {
+        setErrorMessage(error.response.data.validationErrors);
+      }
     } finally {
       setApiProgress(false);
     }
@@ -55,9 +61,16 @@ export function SignUp() {
                         <input
                           type="text"
                           id="username"
-                          className="form-control form-control-lg"
+                          className={
+                            errorMessage.username
+                              ? "form-control form-control-lg is-invalid"
+                              : "form-control form-control-lg"
+                          }
                           onChange={(event) => setUsername(event.target.value)}
                         />
+                        <div className="invalid-feedback">
+                          {errorMessage.username}
+                        </div>
                       </div>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="email">

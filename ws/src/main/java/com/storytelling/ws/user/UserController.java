@@ -31,6 +31,7 @@ public class UserController {
             apiError.setStatus(400);
             Map<String, String> validationErrors = new HashMap<>();
             validationErrors.put("username", "Username cannot be null");
+            apiError.setValidationErrors(validationErrors);
             return ResponseEntity.badRequest().body(apiError);
         }
         userService.createUser(user);
