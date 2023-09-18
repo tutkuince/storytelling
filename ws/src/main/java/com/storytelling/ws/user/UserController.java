@@ -31,10 +31,10 @@ public class UserController {
         apiError.setStatus(400);
 
         if (user.getUsername() == null || user.getUsername().isEmpty()) {
-            validationErrors.put("username", "Username cannot be null");
+            validationErrors.put("username", "Username cannot be null!");
         }
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
-            validationErrors.put("email", "email cannot be null");
+            validationErrors.put("email", "E-mail cannot be null!");
         }
         if (!validationErrors.isEmpty()) {
             apiError.setValidationErrors(validationErrors);
