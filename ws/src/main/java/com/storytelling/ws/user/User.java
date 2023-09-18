@@ -1,7 +1,7 @@
 package com.storytelling.ws.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "users")
@@ -10,12 +10,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username", unique = true)
+    @Size(min = 8, max = 255)
     @NotBlank
     private String username;
     @Column(name = "email", unique = true)
     @NotBlank
+    @Email
     private String email;
     @Column(name = "password")
+    @NotBlank
+    @Size(min = 8, max = 255)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Password must contain numbers, upper and lowercase letters")
     private String password;
 
     public Long getId() {
