@@ -10,6 +10,7 @@ export function SignUp() {
   const [apiProgress, setApiProgress] = useState(false);
   const [successMessage, setSuccessMessage] = useState();
   const [errorMessage, setErrorMessage] = useState({});
+  const [generalError, setGeneralError] = useState();
 
   useEffect(() => {
     setErrorMessage({});
@@ -19,6 +20,7 @@ export function SignUp() {
     event.preventDefault();
     setApiProgress(true);
     setSuccessMessage();
+    setGeneralError();
 
     try {
       const response = await signUp({
@@ -33,6 +35,8 @@ export function SignUp() {
     } catch (error) {
       if (error.response?.data && error.response.data.status == 400) {
         setErrorMessage(error.response.data.validationErrors);
+      } else {
+        setGeneralError("Unexpected error occured. Please try again!");
       }
     } finally {
       setApiProgress(false);
@@ -110,6 +114,11 @@ export function SignUp() {
                       {successMessage && (
                         <div className="alert alert-success" role="alert">
                           {successMessage}
+                        </div>
+                      )}
+                      {generalError && (
+                        <div className="alert alert-danger" role="alert">
+                          {generalError}
                         </div>
                       )}
                       <div className="d-grid gap-2">
