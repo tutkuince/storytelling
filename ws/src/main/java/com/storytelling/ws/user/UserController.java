@@ -2,12 +2,12 @@ package com.storytelling.ws.user;
 
 import com.storytelling.ws.error.ApiError;
 import com.storytelling.ws.shared.GenericMessage;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,25 +23,22 @@ public class UserController {
     }
 
     @PostMapping("/v1/users")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        Map<String, String> validationErrors = new HashMap<>();
+    public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
+        userService.createUser(user);
+        return ResponseEntity.ok(new GenericMessage("User is created"));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<ApiError> handleMethodArgNotValidEx(MethodArgumentNotValidException exception) {
         ApiError apiError = new ApiError();
         apiError.setPath("/api/v1/users");
         apiError.setMessage("Validation Error");
         apiError.setStatus(400);
-
-        if (user.getUsername() == null || user.getUsername().isEmpty()) {
-            validationErrors.put("username", "Username cannot be null!");
+        Map<String, String> validationErrors = new HashMap<>();
+        for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
+            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        if (user.getEmail() == null || user.getEmail().isEmpty()) {
-            validationErrors.put("email", "E-mail cannot be null!");
-        }
-        if (!validationErrors.isEmpty()) {
-            apiError.setValidationErrors(validationErrors);
-            return ResponseEntity.badRequest().body(apiError);
-        }
-
-        userService.createUser(user);
-        return ResponseEntity.ok(new GenericMessage("User is created"));
+        apiError.setValidationErrors(validationErrors);
+        return ResponseEntity.badRequest().body(apiError);
     }
 }
