@@ -4,7 +4,6 @@ import com.storytelling.ws.error.ApiError;
 import com.storytelling.ws.shared.GenericMessage;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
