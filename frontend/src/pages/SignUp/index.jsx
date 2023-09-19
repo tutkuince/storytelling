@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { signUp } from "./api";
 import { Input } from "./components/input";
 
@@ -67,6 +67,13 @@ export function SignUp() {
     }
   };
 
+  const passwordRepeatError = useMemo(() => {
+    if (password && password !== repeatPassword) {
+      return "Password mismatch";
+    }
+    return "";
+  }, [password, repeatPassword]);
+
   return (
     <>
       <section className="vh-100">
@@ -103,19 +110,15 @@ export function SignUp() {
                         error={errorMessage.password}
                         onChange={(event) => setPassword(event.target.value)}
                       />
-                      <div className="form-outline mb-4">
-                        <label className="form-label" htmlFor="repeatPassword">
-                          Repeat Your Password
-                        </label>
-                        <input
-                          type="password"
-                          id="repeatPassword"
-                          className="form-control form-control-lg"
-                          onChange={(event) =>
-                            setRepeatPassword(event.target.value)
-                          }
-                        />
-                      </div>
+                      <Input
+                        id="repeatPassword"
+                        label="Repeat Your Password"
+                        type="password"
+                        error={passwordRepeatError}
+                        onChange={(event) =>
+                          setRepeatPassword(event.target.value)
+                        }
+                      />
                       {successMessage && (
                         <div className="alert alert-success" role="alert">
                           {successMessage}
