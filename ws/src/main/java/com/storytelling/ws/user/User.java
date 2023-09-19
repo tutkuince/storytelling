@@ -1,5 +1,6 @@
 package com.storytelling.ws.user;
 
+import com.storytelling.ws.user.validation.UniqueEmail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -16,6 +17,7 @@ public class User {
     @Column(name = "email")
     @NotBlank
     @Email
+    @UniqueEmail
     private String email;
     @Column(name = "password")
     @NotBlank
