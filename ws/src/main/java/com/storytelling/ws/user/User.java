@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +13,7 @@ public class User {
     @Size(min = 8, max = 255)
     @NotBlank
     private String username;
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     @NotBlank
     @Email
     private String email;
