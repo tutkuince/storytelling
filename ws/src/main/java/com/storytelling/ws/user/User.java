@@ -12,7 +12,7 @@ public class User {
     private Long id;
     @Column(name = "username", unique = true)
     @Size(min = 8, max = 255)
-    @NotBlank
+    @NotBlank(message = "{storytelling.constraints.username.notblank}")
     private String username;
     @Column(name = "email")
     @NotBlank
