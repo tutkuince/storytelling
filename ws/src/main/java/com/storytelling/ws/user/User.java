@@ -22,7 +22,7 @@ public class User {
     @Column(name = "password")
     @NotBlank
     @Size(min = 8, max = 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "Password must contain numbers, upper and lowercase letters")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{storytelling.constraints.password.pattern}")
     private String password;
 
     public Long getId() {
