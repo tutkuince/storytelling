@@ -1,11 +1,10 @@
 package com.storytelling.ws.user;
 
 import com.storytelling.ws.error.ApiError;
-import com.storytelling.ws.shared.GenericMessage;
 import com.storytelling.ws.shared.Messages;
+import com.storytelling.ws.user.exception.NotUniqueEmailException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -36,7 +35,11 @@ public class UserController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiError> handleMethodArgNotValidEx(MethodArgumentNotValidException exception) {
-       ApiError apiError = getValidationError();
+        ApiError apiError = new ApiError();
+        apiError.setPath("/api/v1/users");
+        String message = Messages.getMessageForLocale("storytelling.constraints.validation.error", LocaleContextHolder.getLocale());
+        apiError.setMessage(message);
+        apiError.setStatus(400);
         Map<String, String> validationErrors = new HashMap<>();
         for (FieldError fieldError : exception.getBindingResult().getFieldErrors()) {
             validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
@@ -51,7 +54,6 @@ public class UserController {
         apiError.setPath("/api/v1/users");
         apiError.setMessage(exception.getMessage());
         apiError.setStatus(400);
-        Map<String, String> validationErrors = new HashMap<>();
         apiError.setValidationErrors(exception.getValidationErrors());
         return ResponseEntity.badRequest().body(apiError);
     }
