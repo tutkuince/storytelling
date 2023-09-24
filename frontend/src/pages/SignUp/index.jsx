@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { signUp } from "./api";
 import { Input } from "./components/input";
+import { useTranslation } from "react-i18next";
 
 export function SignUp() {
   const [username, setUsername] = useState();
@@ -12,6 +13,8 @@ export function SignUp() {
   const [successMessage, setSuccessMessage] = useState();
   const [errorMessage, setErrorMessage] = useState({});
   const [generalError, setGeneralError] = useState();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setErrorMessage((lastErrors) => {
@@ -60,7 +63,7 @@ export function SignUp() {
       if (error.response?.data && error.response.data.status == 400) {
         setErrorMessage(error.response.data.validationErrors);
       } else {
-        setGeneralError("Unexpected error occured. Please try again!");
+        setGeneralError(t("genericError"));
       }
     } finally {
       setApiProgress(false);
@@ -69,7 +72,7 @@ export function SignUp() {
 
   const passwordRepeatError = useMemo(() => {
     if (password && password !== repeatPassword) {
-      return "Password mismatch";
+      return t("passwordMismatch");
     }
     return "";
   }, [password, repeatPassword]);
@@ -84,35 +87,35 @@ export function SignUp() {
                 <div className="card">
                   <div className="card-header">
                     <h2 className="text-uppercase text-center py-3">
-                      Create An Account
+                      {t("signUp")}
                     </h2>
                   </div>
                   <div className="card-body p-5">
                     <form onSubmit={onSubmit}>
                       <Input
                         id="username"
-                        label="Username"
+                        label={t("username")}
                         type="text"
                         error={errorMessage.username}
                         onChange={(event) => setUsername(event.target.value)}
                       />
                       <Input
                         id="email"
-                        label="E-Mail"
+                        label={t("email")}
                         type="email"
                         error={errorMessage.email}
                         onChange={(event) => setEmail(event.target.value)}
                       />
                       <Input
                         id="password"
-                        label="Password"
+                        label={t("password")}
                         type="password"
                         error={errorMessage.password}
                         onChange={(event) => setPassword(event.target.value)}
                       />
                       <Input
                         id="repeatPassword"
-                        label="Repeat Your Password"
+                        label={t("passwordRepeat")}
                         type="password"
                         error={passwordRepeatError}
                         onChange={(event) =>
