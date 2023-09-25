@@ -23,7 +23,6 @@ public class User {
     @Size(min = 8, max = 255)
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{storytelling.constraints.password.pattern}")
     private String password;
-
     public Long getId() {
         return id;
     }
