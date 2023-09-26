@@ -7,6 +7,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
         try {
             String encodedPassword = encodePassword(user.getPassword());
             user.setPassword(encodedPassword);
+            user.setActivationToken(UUID.randomUUID().toString());
             userRepository.save(user);
         } catch (DataIntegrityViolationException exception) {
             throw new NotUniqueEmailException();
