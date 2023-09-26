@@ -1,8 +1,6 @@
 package com.storytelling.ws.user;
 
-import com.storytelling.ws.user.validation.UniqueEmail;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
@@ -11,18 +9,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username", unique = true)
-    @NotBlank(message = "{storytelling.constraints.username.notblank}")
     private String username;
     @Column(name = "email")
-    @NotBlank
-    @Email
-    @UniqueEmail
     private String email;
     @Column(name = "password")
-    @NotBlank
-    @Size(min = 8, max = 255)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$", message = "{storytelling.constraints.password.pattern}")
     private String password;
+    private boolean active = false;
+
+    private String activationToken;
+
     public Long getId() {
         return id;
     }
@@ -55,6 +50,22 @@ public class User {
         this.password = password;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getActivationToken() {
+        return activationToken;
+    }
+
+    public void setActivationToken(String activationToken) {
+        this.activationToken = activationToken;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -62,6 +73,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", active=" + active +
+                ", activationToken='" + activationToken + '\'' +
                 '}';
     }
 }
