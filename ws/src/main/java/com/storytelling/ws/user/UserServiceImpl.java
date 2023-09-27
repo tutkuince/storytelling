@@ -31,7 +31,8 @@ public class UserServiceImpl implements UserService {
             String encodedPassword = encodePassword(user.getPassword());
             user.setPassword(encodedPassword);
             user.setActivationToken(UUID.randomUUID().toString());
-            userRepository.save(user);
+            // Solving Post-Transactional Problems with saveAndFlush
+            userRepository.saveAndFlush(user);
             sendActivationEmail(user);
         } catch (DataIntegrityViolationException exception) {
             throw new NotUniqueEmailException();
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         mailSender.setHost("smtp.ethereal.email");
         mailSender.setPort(587);
         mailSender.setUsername("claudia.durgan69@ethereal.email");
-        mailSender.setPassword("khRpwvabdgqzjg8nNy-");
+        mailSender.setPassword("khRpwvabdgqzjg8nNy");
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.put("mail.smtp.starttls.enable", true);
