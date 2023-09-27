@@ -3,12 +3,14 @@ package com.storytelling.ws.user;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Properties;
 import java.util.UUID;
@@ -22,6 +24,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional(rollbackFor = MailException.class)
     @Override
     public void createUser(User user) {
         try {
@@ -49,7 +52,7 @@ public class UserServiceImpl implements UserService {
         mailSender.setHost("smtp.ethereal.email");
         mailSender.setPort(587);
         mailSender.setUsername("claudia.durgan69@ethereal.email");
-        mailSender.setPassword("khRpwvabdgqzjg8nNy");
+        mailSender.setPassword("khRpwvabdgqzjg8nNy-");
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.put("mail.smtp.starttls.enable", true);
