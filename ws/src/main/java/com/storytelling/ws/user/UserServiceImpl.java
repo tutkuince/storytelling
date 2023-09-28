@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         mailSender.setHost("smtp.ethereal.email");
         mailSender.setPort(587);
         mailSender.setUsername("claudia.durgan69@ethereal.email");
-        mailSender.setPassword("khRpwvabdgqzjg8nNy");
+        mailSender.setPassword("khRpwvabdgqzjg8nNy-");
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.put("mail.smtp.starttls.enable", true);
