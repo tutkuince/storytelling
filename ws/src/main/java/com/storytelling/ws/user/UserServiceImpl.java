@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
         mailSender.setPassword("khRpwvabdgqzjg8nNy");
 
         Properties properties = mailSender.getJavaMailProperties();
-        properties.put("mail.smtp.starttls.enable", false);
+        properties.put("mail.smtp.starttls.enable", true);
 
         return mailSender;
     }
