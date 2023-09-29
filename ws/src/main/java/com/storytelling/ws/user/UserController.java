@@ -3,6 +3,7 @@ package com.storytelling.ws.user;
 import com.storytelling.ws.error.ApiError;
 import com.storytelling.ws.shared.Messages;
 import com.storytelling.ws.user.dto.UserCreate;
+import com.storytelling.ws.user.exception.ActivationNotificationException;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class UserController {
             validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
         apiError.setValidationErrors(validationErrors);
-        return ResponseEntity.badRequest().body(apiError);
+        return ResponseEntity.status(400).body(apiError);
     }
 
     @ExceptionHandler(NotUniqueEmailException.class)
@@ -56,7 +57,16 @@ public class UserController {
         apiError.setMessage(exception.getMessage());
         apiError.setStatus(400);
         apiError.setValidationErrors(exception.getValidationErrors());
-        return ResponseEntity.badRequest().body(apiError);
+        return ResponseEntity.status(400).body(apiError);
+    }
+
+    @ExceptionHandler(ActivationNotificationException.class)
+    ResponseEntity<ApiError> handleActivationNotificationEx(ActivationNotificationException exception) {
+        ApiError apiError = new ApiError();
+        apiError.setPath("/api/v1/users");
+        apiError.setMessage(exception.getMessage());
+        apiError.setStatus(502);
+        return ResponseEntity.status(502).body(apiError);
     }
 
 }
