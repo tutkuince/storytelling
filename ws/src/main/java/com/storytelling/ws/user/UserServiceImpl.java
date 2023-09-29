@@ -1,24 +1,27 @@
 package com.storytelling.ws.user;
 
+import com.storytelling.ws.email.EmailService;
 import com.storytelling.ws.user.exception.ActivationNotificationException;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Properties;
 import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private EmailService emailService;
+
+    @Autowired
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -34,7 +37,7 @@ public class UserServiceImpl implements UserService {
             user.setActivationToken(UUID.randomUUID().toString());
             // Solving Post-Transactional Problems with saveAndFlush
             userRepository.saveAndFlush(user);
-            sendActivationEmail(user);
+            emailService.sendActivationEmail(user.getEmail(), encodedPassword);
         } catch (DataIntegrityViolationException exception) {
             throw new NotUniqueEmailException();
         } catch (MailException exception) {
@@ -42,27 +45,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void sendActivationEmail(User user) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("info@storytelling.com");
-        message.setTo(user.getEmail());
-        message.setSubject("Account Activation");
-        message.setText("http://localhost:5173/activation/" + user.getActivationToken());
-        getJavaMailSender().send(message);
-    }
 
-    public JavaMailSender getJavaMailSender() {
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.ethereal.email");
-        mailSender.setPort(587);
-        mailSender.setUsername("claudia.durgan69@ethereal.email");
-        mailSender.setPassword("khRpwvabdgqzjg8nNy");
-
-        Properties properties = mailSender.getJavaMailProperties();
-        properties.put("mail.smtp.starttls.enable", true);
-
-        return mailSender;
-    }
 
     @Override
     public String encodePassword(String password) {
