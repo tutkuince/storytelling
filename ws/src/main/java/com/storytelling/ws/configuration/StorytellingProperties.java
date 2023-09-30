@@ -25,15 +25,17 @@ public class StorytellingProperties {
         this.client = client;
     }
 
-    public static record Email (
+    public static record Email(
             String username,
             String password,
             String host,
             int port,
             String from
-    ){}
+    ) {
+    }
 
     public static record Client(
             String host
-    ){}
+    ) {
+    }
 }
