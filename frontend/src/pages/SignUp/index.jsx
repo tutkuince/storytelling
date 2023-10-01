@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { LanguageSelector } from "../../shared/components/LanguageSelector";
 import { signUp } from "./api";
 import { Input } from "./components/input";
 
@@ -162,7 +161,6 @@ export const SignUp = () => {
                         </a>
                       </p>
                     </form>
-                    <LanguageSelector />
                   </div>
                 </div>
               </div>
