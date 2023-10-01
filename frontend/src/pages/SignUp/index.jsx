@@ -50,9 +50,6 @@ export const SignUp = () => {
 
     try {
       const response = await signUp({
-        //   username: username,
-        //   email: email,
-        //   password: password,
         username,
         email,
         password,
