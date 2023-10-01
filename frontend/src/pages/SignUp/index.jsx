@@ -1,11 +1,10 @@
-import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
-import { signUp } from "./api";
-import { Input } from "./components/input";
 import { useTranslation } from "react-i18next";
 import { LanguageSelector } from "../../shared/components/LanguageSelector";
+import { signUp } from "./api";
+import { Input } from "./components/input";
 
-export function SignUp() {
+export const SignUp = () => {
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -173,4 +172,4 @@ export function SignUp() {
       </section>
     </>
   );
-}
+};
