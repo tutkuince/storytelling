@@ -2,6 +2,7 @@ package com.storytelling.ws.user;
 
 import com.storytelling.ws.email.EmailService;
 import com.storytelling.ws.user.exception.ActivationNotificationException;
+import com.storytelling.ws.user.exception.InvalidTokenException;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -59,8 +60,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void activateUser(String token) {
         User user = userRepository.findByActivationToken(token);
+        if (user == null) {
+            throw new InvalidTokenException();
+        }
         user.setActive(true);
-        user.setActivationToken("");
+        user.setActivationToken(null);
         userRepository.save(user);
     }
 }
