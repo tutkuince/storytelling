@@ -7,7 +7,7 @@ export const App = () => {
   const { t } = useTranslation();
   return (
     <>
-      <nav className="navbar navbar-expand fixed-top bg-dark">
+      <nav className="navbar navbar-expand bg-dark">
         <div className="container-fluid">
           <Link className="navbar-brand text-white" to="/">
             <img src={logo} width={40} />
