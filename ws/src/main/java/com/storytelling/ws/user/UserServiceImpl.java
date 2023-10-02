@@ -37,15 +37,13 @@ public class UserServiceImpl implements UserService {
             user.setActivationToken(UUID.randomUUID().toString());
             // Solving Post-Transactional Problems with saveAndFlush
             userRepository.saveAndFlush(user);
-            emailService.sendActivationEmail(user.getEmail(), encodedPassword);
+            emailService.sendActivationEmail(user.getEmail(), user.getActivationToken());
         } catch (DataIntegrityViolationException exception) {
             throw new NotUniqueEmailException();
         } catch (MailException exception) {
             throw new ActivationNotificationException();
         }
     }
-
-
 
     @Override
     public String encodePassword(String password) {
@@ -56,5 +54,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public void activateUser(String token) {
+        User user = userRepository.findByActivationToken(token);
+        user.setActive(true);
+        user.setActivationToken("");
+        userRepository.save(user);
     }
 }
