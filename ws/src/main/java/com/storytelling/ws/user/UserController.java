@@ -35,6 +35,13 @@ public class UserController {
         return ResponseEntity.ok(message);
     }
 
+    @PatchMapping("/v1/users/{token}/active")
+    public ResponseEntity<?> activateUser(@PathVariable String token) {
+        userService.activateUser(token);
+        String message = Messages.getMessageForLocale("storytelling.activate.user.success.message", LocaleContextHolder.getLocale());
+        return ResponseEntity.ok(message);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiError> handleMethodArgNotValidEx(MethodArgumentNotValidException exception) {
         ApiError apiError = new ApiError();
