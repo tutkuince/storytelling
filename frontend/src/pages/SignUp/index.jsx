@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { signUp } from "./api";
 import { Input } from "./components/input";
+import { Spinner } from "../../shared/components/Spinner";
 
 export const SignUp = () => {
   const [username, setUsername] = useState();
@@ -142,12 +143,7 @@ export const SignUp = () => {
                             password !== repeatPassword
                           }
                         >
-                          {apiProgress && (
-                            <span
-                              className="spinner-border spinner-border-sm"
-                              aria-hidden="true"
-                            ></span>
-                          )}
+                          {apiProgress && <Spinner sm="true" />}
                           Register
                         </button>
                       </div>

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { activateUser } from "./api";
+import { Alert } from "../../shared/components/Alert";
+import { Spinner } from "../../shared/components/Spinner";
 
 export const Activation = () => {
   const { token } = useParams();
@@ -12,7 +14,8 @@ export const Activation = () => {
     async function activate() {
       setApiProgress(true);
       try {
-        activateUser(token);
+        const response = activateUser(token);
+        setSuccessMessage(response.data.message);
       } catch (axiosError) {
         setErrorMessage(axiosError.response.data.message);
       } finally {
@@ -24,22 +27,9 @@ export const Activation = () => {
 
   return (
     <>
-      {apiProgress && (
-        <span
-          className="spinner-border spinner-border"
-          aria-hidden="true"
-        ></span>
-      )}
-      {successMessage && (
-        <div className="alert alert-success" role="alert">
-          {successMessage}
-        </div>
-      )}
-      {errorMessage && (
-        <div className="alert alert-danger" role="alert">
-          {errorMessage}
-        </div>
-      )}
+      {apiProgress && <Spinner sm="false" />}
+      {successMessage && <Alert>{successMessage}</Alert>}
+      {errorMessage && <Alert styleType="danger">{errorMessage}</Alert>}
     </>
   );
 };
