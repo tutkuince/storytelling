@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../images/logo.png";
+import logo from "@/images/logo.png";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
 
