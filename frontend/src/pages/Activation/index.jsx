@@ -14,7 +14,7 @@ export const Activation = () => {
     async function activate() {
       setApiProgress(true);
       try {
-        const response = activateUser(token);
+        const response = await activateUser(token);
         setSuccessMessage(response.data.message);
       } catch (axiosError) {
         setErrorMessage(axiosError.response.data.message);
