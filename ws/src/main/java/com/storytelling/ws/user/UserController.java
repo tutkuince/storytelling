@@ -4,6 +4,7 @@ import com.storytelling.ws.error.ApiError;
 import com.storytelling.ws.shared.Messages;
 import com.storytelling.ws.user.dto.UserCreate;
 import com.storytelling.ws.user.exception.ActivationNotificationException;
+import com.storytelling.ws.user.exception.InvalidTokenException;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,15 @@ public class UserController {
         apiError.setMessage(exception.getMessage());
         apiError.setStatus(502);
         return ResponseEntity.status(502).body(apiError);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    ResponseEntity<ApiError> handleInvalidTokenEx(InvalidTokenException exception) {
+        ApiError apiError = new ApiError();
+        apiError.setPath("/api/v1/users");
+        apiError.setMessage(exception.getMessage());
+        apiError.setStatus(400);
+        return ResponseEntity.status(400).body(apiError);
     }
 
 }
