@@ -9,13 +9,14 @@ import com.storytelling.ws.user.exception.NotUniqueEmailException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -45,9 +46,8 @@ public class UserController {
     }
 
     @GetMapping("/v1/users")
-    public ResponseEntity<List<User>> finAll() {
-        List<User> userList = userService.findAll();
-        return ResponseEntity.ok(userList);
+    public Page<User> finAll(Pageable pageable) {
+        return userService.findAll(pageable);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
