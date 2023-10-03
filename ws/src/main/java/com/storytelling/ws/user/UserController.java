@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -41,6 +42,12 @@ public class UserController {
         userService.activateUser(token);
         String message = Messages.getMessageForLocale("storytelling.activate.user.success.message", LocaleContextHolder.getLocale());
         return ResponseEntity.ok(message);
+    }
+
+    @GetMapping("/v1/users")
+    public ResponseEntity<List<User>> finAll() {
+        List<User> userList = userService.findAll();
+        return ResponseEntity.ok(userList);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
