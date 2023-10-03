@@ -14,9 +14,12 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
+    @Column(name = "active")
     private boolean active = false;
-
+    @Column(name = "activation_token")
     private String activationToken;
+    @Column(name = "image")
+    private String image;
 
     public Long getId() {
         return id;
@@ -62,8 +65,16 @@ public class User {
         return activationToken;
     }
 
-    public void setActivationToken(String activationToken) {
+   public void setActivationToken(String activationToken) {
         this.activationToken = activationToken;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
@@ -72,9 +83,8 @@ public class User {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", active=" + active +
-                ", activationToken='" + activationToken + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 }
