@@ -1,7 +1,9 @@
+import { UserList } from "./components/UserList";
+
 export const Home = () => {
   return (
     <>
-      <h1>Home Page</h1>
+      <UserList />
     </>
   );
 };
