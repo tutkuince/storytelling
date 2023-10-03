@@ -3,6 +3,7 @@ package com.storytelling.ws.user;
 import com.storytelling.ws.error.ApiError;
 import com.storytelling.ws.shared.Messages;
 import com.storytelling.ws.user.dto.UserCreate;
+import com.storytelling.ws.user.dto.UserDTO;
 import com.storytelling.ws.user.exception.ActivationNotificationException;
 import com.storytelling.ws.user.exception.InvalidTokenException;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
@@ -46,8 +47,8 @@ public class UserController {
     }
 
     @GetMapping("/v1/users")
-    public Page<User> finAll(Pageable pageable) {
-        return userService.findAll(pageable);
+    public Page<UserDTO> finAll(Pageable pageable) {
+        return userService.findAll(pageable).map(UserDTO::new);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
