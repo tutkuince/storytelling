@@ -4,6 +4,7 @@ import { loadUser } from "./api";
 
 import { Spinner } from "@/shared/components/Spinner";
 import { Alert } from "@/shared/components/Alert";
+import { ProfileCard } from "./components/ProfileCard";
 
 export class UserClass extends Component {
   state = {
@@ -45,7 +46,7 @@ export class UserClass extends Component {
   render() {
     return (
       <>
-        {this.state.user && <h1>{this.state.user.username}</h1>}
+        {this.state.user && <ProfileCard user={this.state.user} />}
         {this.state.apiProgress && (
           <Alert styleType="secondary" center>
             <Spinner />
