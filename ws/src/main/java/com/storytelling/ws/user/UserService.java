@@ -11,4 +11,5 @@ public interface UserService {
     User findByEmail(String email);
     void activateUser(String token);
     Page<User> findAll(Pageable pageable);
+    User findById(Long id);
 }
