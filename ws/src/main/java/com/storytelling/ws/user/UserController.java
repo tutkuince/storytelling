@@ -7,6 +7,8 @@ import com.storytelling.ws.user.dto.UserDTO;
 import com.storytelling.ws.user.exception.ActivationNotificationException;
 import com.storytelling.ws.user.exception.InvalidTokenException;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
+import com.storytelling.ws.user.exception.UserNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -51,6 +53,12 @@ public class UserController {
         return userService.findAll(pageable).map(UserDTO::new);
     }
 
+    @GetMapping("/v1/users/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
+        UserDTO userDTO = new UserDTO(userService.findById(id));
+        return ResponseEntity.ok(userDTO);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiError> handleMethodArgNotValidEx(MethodArgumentNotValidException exception) {
         ApiError apiError = new ApiError();
@@ -86,12 +94,21 @@ public class UserController {
     }
 
     @ExceptionHandler(InvalidTokenException.class)
-    ResponseEntity<ApiError> handleInvalidTokenEx(InvalidTokenException exception) {
+    ResponseEntity<ApiError> handleInvalidTokenEx(InvalidTokenException exception, HttpServletRequest request) {
         ApiError apiError = new ApiError();
-        apiError.setPath("/api/v1/users");
+        apiError.setPath(request.getRequestURI());
         apiError.setMessage(exception.getMessage());
         apiError.setStatus(400);
         return ResponseEntity.status(400).body(apiError);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    ResponseEntity<ApiError> handleUserNotFoundEx(UserNotFoundException exception, HttpServletRequest request) {
+        ApiError apiError = new ApiError();
+        apiError.setPath(request.getRequestURI());
+        apiError.setMessage(exception.getMessage());
+        apiError.setStatus(404);
+        return ResponseEntity.status(404).body(apiError);
     }
 
 }
