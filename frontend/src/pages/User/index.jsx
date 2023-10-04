@@ -12,7 +12,7 @@ export class UserClass extends Component {
     error: null,
   };
 
-  async componentDidMount() {
+  loadSelectedUser = async () => {
     this.setState({ apiProgress: true });
     try {
       const response = await loadUser(this.props.id);
@@ -26,6 +26,20 @@ export class UserClass extends Component {
     } finally {
       this.setState({ apiProgress: false });
     }
+  };
+
+  async componentDidMount() {
+    this.loadSelectedUser();
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (this.props.id !== previousProps.id) {
+      this.loadSelectedUser();
+    }
+  }
+
+  componentWillUnmount() {
+    console.log("Component will be unmounted");
   }
 
   render() {

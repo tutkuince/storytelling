@@ -23,7 +23,7 @@ export const Activation = () => {
       }
     }
     activate();
-  }, []);
+  }, [token]);
 
   return (
     <>
