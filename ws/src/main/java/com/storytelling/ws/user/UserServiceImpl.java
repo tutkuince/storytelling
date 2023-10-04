@@ -79,11 +79,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            return optionalUser.get();
-        } else {
-            throw new UserNotFoundException();
-        }
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 }
