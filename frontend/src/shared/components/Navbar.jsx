@@ -14,6 +14,11 @@ export const Navbar = () => {
         </Link>
         <ul className="navbar-nav">
           <li className="nav-item align-middle">
+            <Link to="/login" className="nav-link text-white px-2">
+              {t("login")}
+            </Link>
+          </li>
+          <li className="nav-item align-middle">
             <Link to="/signup" className="nav-link text-white px-2">
               {t("signUp")}
             </Link>

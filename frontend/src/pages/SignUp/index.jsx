@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { signUp } from "./api";
 import { Input } from "./components/input";
 import { Spinner } from "@/shared/components/Spinner";
+import { Link } from "react-router-dom";
 
 export const SignUp = () => {
   const [username, setUsername] = useState();
@@ -149,9 +150,9 @@ export const SignUp = () => {
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
                         Have already an account? &nbsp;
-                        <a href="#!" className="fw-bold text-body">
+                        <Link to={"/login"} className="fw-bold text-body">
                           <u>Login here</u>
-                        </a>
+                        </Link>
                       </p>
                     </form>
                   </div>
