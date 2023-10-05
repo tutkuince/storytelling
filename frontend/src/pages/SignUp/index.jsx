@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { signUp } from "./api";
-import { Input } from "./components/input";
+import { Input } from "@/shared/components/Input";
 import { Spinner } from "@/shared/components/Spinner";
 import { Link } from "react-router-dom";
+import { Button } from "@/shared/components/Button";
 
 export const SignUp = () => {
   const [username, setUsername] = useState();
@@ -135,18 +136,16 @@ export const SignUp = () => {
                         </div>
                       )}
                       <div className="d-grid gap-2">
-                        <button
-                          type="submit"
-                          className="btn btn-outline-dark"
+                        <Button
                           disabled={
                             apiProgress ||
                             !password ||
                             password !== repeatPassword
                           }
+                          apiProgress={apiProgress && <Spinner sm="true" />}
                         >
-                          {apiProgress && <Spinner sm="true" />}
-                          Register
-                        </button>
+                          {t("signUp")}
+                        </Button>
                       </div>
                       <p className="text-center text-muted mt-5 mb-0">
                         Have already an account? &nbsp;

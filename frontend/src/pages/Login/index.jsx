@@ -2,7 +2,8 @@ import { Alert } from "@/shared/components/Alert";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { Input } from "../SignUp/components/Input";
+import { Input } from "@/shared/components/Input";
+import { Button } from "@/shared/components/Button";
 
 export const Login = () => {
   const [email, setEmail] = useState();
@@ -97,14 +98,12 @@ export const Login = () => {
                   <Alert styleType="danger">{generalError}</Alert>
                 )}
                 <div className="text-center text-lg-start mt-4 pt-2 d-grid gap-2">
-                  <button
-                    type="button"
-                    className="btn btn-dark btn-lg"
-                    style={{ paddingLeft: 2, paddingRight: 2 }}
-                    disabled={apiProgress || !password}
+                  <Button
+                    disabled={!email || !password}
+                    apiProgress={apiProgress}
                   >
                     {t("login")}
-                  </button>
+                  </Button>
                   <p className="small fw-bold mt-2 pt-1 mb-0">
                     {"Don't have an account?"}&nbsp;
                     <Link to={"/signUp"} className="link-danger">
