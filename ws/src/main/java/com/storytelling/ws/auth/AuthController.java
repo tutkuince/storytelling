@@ -1,5 +1,6 @@
 package com.storytelling.ws.auth;
 
+import com.storytelling.ws.auth.dto.AuthResponse;
 import com.storytelling.ws.auth.dto.Credentials;
 import com.storytelling.ws.auth.exception.AuthenticationException;
 import com.storytelling.ws.error.ApiError;
@@ -17,8 +18,9 @@ public class AuthController {
         this.authService = authService;
     }
     @PostMapping("/auth")
-    public void handleAuthentication(@RequestBody Credentials credential) {
-        authService.authenticate(credential);
+    public ResponseEntity<AuthResponse> handleAuthentication(@RequestBody Credentials credential) {
+        AuthResponse authResponse = authService.authenticate(credential);
+        return ResponseEntity.ok().body(authResponse);
     }
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiError> handleAuthenticationEx(AuthenticationException exception, HttpServletRequest request) {
