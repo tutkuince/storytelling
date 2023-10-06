@@ -2,12 +2,13 @@ package com.storytelling.ws.auth;
 
 import com.storytelling.ws.auth.dto.AuthResponse;
 import com.storytelling.ws.auth.dto.Credentials;
-import com.storytelling.ws.auth.exception.AuthenticationException;
-import com.storytelling.ws.error.ApiError;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -18,16 +19,8 @@ public class AuthController {
         this.authService = authService;
     }
     @PostMapping("/auth")
-    public ResponseEntity<AuthResponse> handleAuthentication(@RequestBody Credentials credential) {
+    public ResponseEntity<AuthResponse> handleAuthentication(@Valid @RequestBody Credentials credential) {
         AuthResponse authResponse = authService.authenticate(credential);
         return ResponseEntity.ok().body(authResponse);
-    }
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ApiError> handleAuthenticationEx(AuthenticationException exception, HttpServletRequest request) {
-        ApiError apiError = new ApiError();
-        apiError.setPath(request.getRequestURI());
-        apiError.setStatus(401);
-        apiError.setMessage(exception.getMessage());
-        return ResponseEntity.status(401).body(apiError);
     }
 }
