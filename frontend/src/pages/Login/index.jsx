@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Input } from "@/shared/components/Input";
 import { Button } from "@/shared/components/Button";
+import { login } from "./api";
 
 export const Login = () => {
   const [email, setEmail] = useState();
@@ -33,9 +34,24 @@ export const Login = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setSuccessMessage();
     setGeneralError();
     setApiProgress(true);
+
+    try {
+      const response = await login({ email, password });
+    } catch (axiosError) {
+      if (axiosError.response?.data) {
+        if (axiosError.response.data.status === 400) {
+          setErrors(axiosError.response.data.validationErrors);
+        } else {
+          setGeneralError(axiosError.response.data.message);
+        }
+      } else {
+        setGeneralError(t("genericError"));
+      }
+    } finally {
+      setApiProgress(false);
+    }
   };
 
   return (
