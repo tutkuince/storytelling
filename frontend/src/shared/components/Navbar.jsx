@@ -8,6 +8,9 @@ import { AuthContext } from "../state/context";
 export const Navbar = () => {
   const { t } = useTranslation();
   const authState = useContext(AuthContext);
+  const onClickLogout = () => {
+    authState.onLogoutSuccess();
+  };
   return (
     <nav className="navbar navbar-expand bg-dark">
       <div className="container-fluid">
@@ -42,7 +45,11 @@ export const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item align-middle">
-                <span className="nav-link text-white px-2" role="button">
+                <span
+                  className="nav-link text-white px-2"
+                  role="button"
+                  onClick={onClickLogout}
+                >
                   Logout
                 </span>
               </li>
