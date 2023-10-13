@@ -2,9 +2,12 @@ import { Link } from "react-router-dom";
 import logo from "@/images/logo.png";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
+import { useContext } from "react";
+import { AuthContext } from "../state/context";
 
-export const Navbar = ({ authState }) => {
+export const Navbar = () => {
   const { t } = useTranslation();
+  const authState = useContext(AuthContext);
   return (
     <nav className="navbar navbar-expand bg-dark">
       <div className="container-fluid">

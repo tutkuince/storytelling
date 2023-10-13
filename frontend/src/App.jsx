@@ -1,22 +1,14 @@
-import { useState } from "react";
-import { Login } from "./pages/Login";
+import { Outlet } from "react-router-dom";
 import { Navbar } from "./shared/components/Navbar";
+import { AuthenticationContext } from "./shared/state/context";
 
 export const App = () => {
-  const [authState, setAuthState] = useState({
-    id: 0,
-  });
-
-  const onLoginSuccess = (data) => {
-    setAuthState(data);
-  };
   return (
-    <>
-      <Navbar authState={authState} />
+    <AuthenticationContext>
+      <Navbar />
       <div className="container mt-3">
-        {/* <Outlet /> */}
-        <Login onLoginSuccess={onLoginSuccess} />
+        <Outlet />
       </div>
-    </>
+    </AuthenticationContext>
   );
 };

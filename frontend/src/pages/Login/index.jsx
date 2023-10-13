@@ -1,18 +1,21 @@
 import { Alert } from "@/shared/components/Alert";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
-import { Input } from "@/shared/components/Input";
 import { Button } from "@/shared/components/Button";
+import { Input } from "@/shared/components/Input";
+import { AuthContext } from "@/shared/state/context";
+import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
 import { login } from "./api";
 
-export const Login = ({ onLoginSuccess }) => {
+export const Login = () => {
+  const authState = useContext(AuthContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [apiProgress, setApiProgress] = useState();
   const [errors, setErrors] = useState();
   const [generalError, setGeneralError] = useState();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setErrors(function (lastErrors) {
@@ -39,7 +42,8 @@ export const Login = ({ onLoginSuccess }) => {
 
     try {
       const response = await login({ email, password });
-      onLoginSuccess(response.data.user);
+      authState.onLoginSuccess(response.data.user);
+      navigate("/");
     } catch (axiosError) {
       if (axiosError.response?.data) {
         if (axiosError.response.data.status === 400) {
