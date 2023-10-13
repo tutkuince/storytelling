@@ -3,7 +3,7 @@ import logo from "@/images/logo.png";
 import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
 
-export const Navbar = () => {
+export const Navbar = ({ authState }) => {
   const { t } = useTranslation();
   return (
     <nav className="navbar navbar-expand bg-dark">
@@ -13,16 +13,38 @@ export const Navbar = () => {
           Storytelling
         </Link>
         <ul className="navbar-nav">
-          <li className="nav-item align-middle">
-            <Link to="/login" className="nav-link text-white px-2">
-              {t("login")}
-            </Link>
-          </li>
-          <li className="nav-item align-middle">
-            <Link to="/signup" className="nav-link text-white px-2">
-              {t("signUp")}
-            </Link>
-          </li>
+          {authState.id === 0 && (
+            <>
+              <li className="nav-item align-middle">
+                <Link to="/login" className="nav-link text-white px-2">
+                  {t("login")}
+                </Link>
+              </li>
+              <li className="nav-item align-middle">
+                <Link to="/signup" className="nav-link text-white px-2">
+                  {t("signUp")}
+                </Link>
+              </li>
+            </>
+          )}
+
+          {authState.id > 0 && (
+            <>
+              <li className="nav-item align-middle">
+                <Link
+                  to={`/user/${authState.id}`}
+                  className="nav-link text-white px-2"
+                >
+                  My Profile
+                </Link>
+              </li>
+              <li className="nav-item align-middle">
+                <span className="nav-link text-white px-2" role="button">
+                  Logout
+                </span>
+              </li>
+            </>
+          )}
           <li className="nav-item">
             <LanguageSelector />
           </li>
