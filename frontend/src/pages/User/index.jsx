@@ -39,10 +39,6 @@ export class UserClass extends Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log("Component will be unmounted");
-  }
-
   render() {
     return (
       <>

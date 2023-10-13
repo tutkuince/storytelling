@@ -1,15 +1,15 @@
-import { Link } from "react-router-dom";
 import logo from "@/images/logo.png";
-import { LanguageSelector } from "./LanguageSelector";
 import { useTranslation } from "react-i18next";
-import { useContext } from "react";
-import { AuthContext } from "../state/context";
+import { Link } from "react-router-dom";
+import { useAuthDispatch, useAuthState } from "../state/context";
+import { LanguageSelector } from "./LanguageSelector";
 
 export const Navbar = () => {
   const { t } = useTranslation();
-  const authState = useContext(AuthContext);
+  const authState = useAuthState();
+  const dispatch = useAuthDispatch();
   const onClickLogout = () => {
-    authState.onLogoutSuccess();
+    dispatch({ type: "logout-success" });
   };
   return (
     <nav className="navbar navbar-expand bg-dark">

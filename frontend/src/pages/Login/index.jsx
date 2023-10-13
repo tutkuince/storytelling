@@ -1,7 +1,7 @@
 import { Alert } from "@/shared/components/Alert";
 import { Button } from "@/shared/components/Button";
 import { Input } from "@/shared/components/Input";
-import { AuthContext } from "@/shared/state/context";
+import { AuthContext, useAuthDispatch } from "@/shared/state/context";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ export const Login = () => {
   const [generalError, setGeneralError] = useState();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useAuthDispatch();
 
   useEffect(() => {
     setErrors(function (lastErrors) {
@@ -42,7 +43,7 @@ export const Login = () => {
 
     try {
       const response = await login({ email, password });
-      authState.onLoginSuccess(response.data.user);
+      dispatch({ type: "login-success", data: response.data.user });
       navigate("/");
     } catch (axiosError) {
       if (axiosError.response?.data) {
