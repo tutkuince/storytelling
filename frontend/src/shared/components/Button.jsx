@@ -1,11 +1,18 @@
 import { Spinner } from "./Spinner";
 
-export const Button = ({ apiProgress, disabled, children }) => {
+export const Button = ({
+  apiProgress,
+  disabled,
+  children,
+  onClick,
+  styleType = "outline-dark",
+}) => {
   return (
     <button
+      className={`btn btn-${styleType}`}
       type="submit"
-      className="btn btn-outline-dark"
       disabled={apiProgress || disabled}
+      onClick={onClick}
     >
       {apiProgress && <Spinner sm="true" />}
       {children}

@@ -1,5 +1,5 @@
 export const Input = (props) => {
-  const { id, label, type, error, onChange } = props;
+  const { id, label, type, error, onChange, defaultValue } = props;
 
   return (
     <div className="form-outline mb-4">
@@ -15,6 +15,7 @@ export const Input = (props) => {
             : "form-control form-control-lg"
         }
         onChange={onChange}
+        defaultValue={defaultValue}
       />
       <div className="invalid-feedback">{error}</div>
     </div>
