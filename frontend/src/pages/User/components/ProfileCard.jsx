@@ -1,33 +1,62 @@
 import defaultProfileImage from "@/images/profile.png";
 import { Button } from "@/shared/components/Button";
 import { Input } from "@/shared/components/Input";
-import { useAuthState } from "@/shared/state/context";
+import { useAuthDispatch, useAuthState } from "@/shared/state/context";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { updateUser } from "./api";
+import { Alert } from "@/shared/components/Alert";
 
 export const ProfileCard = ({ user }) => {
   const authState = useAuthState();
   const [editMode, setEditMode] = useState(false);
   const { t } = useTranslation();
-  const [newUsername, setNewUsername] = useState();
+  const [newUsername, setNewUsername] = useState(authState.username);
   const [apiProgress, setApiProgress] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [generalError, setGeneralError] = useState();
+  const dispatch = useAuthDispatch();
 
   const onChangeUsername = (event) => {
     setNewUsername(event.target.value);
+    setErrors({});
+  };
+
+  const onClickCancel = () => {
+    setEditMode(false);
+    setNewUsername(authState.username);
   };
 
   const onClickSave = async () => {
     setApiProgress(true);
+    setErrors({});
+    setGeneralError();
+    setEditMode(false);
     try {
       await updateUser(user.id, { username: newUsername });
-    } catch (error) {
+      dispatch({
+        type: "user-update-success",
+        data: { username: newUsername },
+      });
+    } catch (axiosError) {
+      if (axiosError.response?.data) {
+        if (axiosError.response.data.status === 400) {
+          setErrors(axiosError.response.data.validationErrors);
+        } else {
+          setGeneralError(axiosError.response.data.message);
+        }
+      } else {
+        setGeneralError(t("genericError"));
+      }
     } finally {
       setApiProgress(false);
     }
   };
 
   const isEditButtonVisible = !editMode && authState.id === user.id;
+
+  const visibleUsername =
+    authState.id === user.id ? authState.username : user.username;
 
   return (
     <div className="card">
@@ -39,7 +68,7 @@ export const ProfileCard = ({ user }) => {
         />
       </div>
       <div className="card-body text-center">
-        {!editMode && <span className="fs-3 d-block">{user.username}</span>}
+        {!editMode && <span className="fs-3 d-block">{visibleUsername}</span>}
         {isEditButtonVisible && (
           <Button onClick={() => setEditMode(true)}>Edit</Button>
         )}
@@ -47,17 +76,16 @@ export const ProfileCard = ({ user }) => {
           <>
             <Input
               label={t("username")}
-              defaultValue={user.username}
+              defaultValue={visibleUsername}
               onChange={onChangeUsername}
+              error={errors.username}
             />
+            {generalError && <Alert styleType="danger">{generalError}</Alert>}
             <Button apiProgress={apiProgress} onClick={onClickSave}>
               Save
             </Button>
             <div className="d-inline m-1"></div>
-            <Button
-              styleType="outline-secondary"
-              onClick={() => setEditMode(false)}
-            >
+            <Button styleType="outline-secondary" onClick={onClickCancel}>
               Cancel
             </Button>
           </>
