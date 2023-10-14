@@ -16,7 +16,7 @@ export const LanguageSelector = () => {
     <>
       <div className="dropdown my-1 p-0">
         <button
-          className="btn btn-secondary dropdown-toggle"
+          className="btn btn-outline-light dropdown-toggle"
           type="button"
           id="dropdownMenuButton1"
           data-bs-toggle="dropdown"

@@ -6,6 +6,7 @@ export const Button = ({
   children,
   onClick,
   styleType = "outline-dark",
+  type,
 }) => {
   return (
     <button
@@ -13,6 +14,7 @@ export const Button = ({
       type="submit"
       disabled={apiProgress || disabled}
       onClick={onClick}
+      type={type}
     >
       {apiProgress && <Spinner sm="true" />}
       {children}
