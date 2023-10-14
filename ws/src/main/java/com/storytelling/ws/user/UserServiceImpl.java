@@ -73,8 +73,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findAll(Pageable page) {
-        return userRepository.findAll(page);
+    public Page<User> findAll(Pageable page, User loggedInUser) {
+        if (loggedInUser == null) {
+            return userRepository.findAll(page);
+        }
+        return userRepository.findByIdNot(loggedInUser.getId(), page);
     }
 
     @Override

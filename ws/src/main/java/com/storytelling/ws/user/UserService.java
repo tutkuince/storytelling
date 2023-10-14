@@ -10,6 +10,6 @@ public interface UserService {
     String encodePassword(String password);
     User findByEmail(String email);
     void activateUser(String token);
-    Page<User> findAll(Pageable pageable);
+    Page<User> findAll(Pageable pageable, User loggedInUser);
     User findById(Long id);
 }

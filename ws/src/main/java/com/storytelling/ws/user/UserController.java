@@ -1,5 +1,6 @@
 package com.storytelling.ws.user;
 
+import com.storytelling.ws.auth.token.TokenService;
 import com.storytelling.ws.shared.Messages;
 import com.storytelling.ws.user.dto.UserCreate;
 import com.storytelling.ws.user.dto.UserDTO;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final TokenService tokenService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, TokenService tokenService) {
         this.userService = userService;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/v1/users")
@@ -38,8 +41,9 @@ public class UserController {
     }
 
     @GetMapping("/v1/users")
-    public Page<UserDTO> finAll(Pageable pageable) {
-        return userService.findAll(pageable).map(UserDTO::new);
+    public Page<UserDTO> finAll(Pageable pageable, @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
+        User loggedUser = tokenService.verifyToken(authorizationHeader);
+        return userService.findAll(pageable, loggedUser).map(UserDTO::new);
     }
 
     @GetMapping("/v1/users/{id}")
