@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useAuthDispatch, useAuthState } from "../state/context";
 import { LanguageSelector } from "./LanguageSelector";
+import { ProfileImage } from "./ProfileImage";
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -41,7 +42,8 @@ export const Navbar = () => {
                   to={`/user/${authState.id}`}
                   className="nav-link text-white px-2"
                 >
-                  My Profile
+                  <ProfileImage width={30} />
+                  <span className="ms-1">{authState.username}</span>
                 </Link>
               </li>
               <li className="nav-item align-middle">
