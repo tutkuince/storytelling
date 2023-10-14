@@ -4,6 +4,8 @@ import com.storytelling.ws.auth.token.TokenService;
 import com.storytelling.ws.shared.Messages;
 import com.storytelling.ws.user.dto.UserCreate;
 import com.storytelling.ws.user.dto.UserDTO;
+import com.storytelling.ws.user.dto.UserUpdate;
+import com.storytelling.ws.user.exception.AuthorizationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -49,6 +51,16 @@ public class UserController {
     @GetMapping("/v1/users/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         UserDTO userDTO = new UserDTO(userService.findById(id));
+        return ResponseEntity.ok(userDTO);
+    }
+
+    @PutMapping("/v1/users/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate, @RequestHeader(name = "Authorization", required = false) String authorizationHeader) {
+        User loggedInUser = tokenService.verifyToken(authorizationHeader);
+        UserDTO userDTO = new UserDTO(userService.updateUser(id, userUpdate));
+        if (loggedInUser == null || loggedInUser.getId() != id) {
+            throw new AuthorizationException();
+        }
         return ResponseEntity.ok(userDTO);
     }
 }

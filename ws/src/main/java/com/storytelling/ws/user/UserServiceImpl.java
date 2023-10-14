@@ -1,6 +1,7 @@
 package com.storytelling.ws.user;
 
 import com.storytelling.ws.email.EmailService;
+import com.storytelling.ws.user.dto.UserUpdate;
 import com.storytelling.ws.user.exception.ActivationNotificationException;
 import com.storytelling.ws.user.exception.InvalidTokenException;
 import com.storytelling.ws.user.exception.NotUniqueEmailException;
@@ -15,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -83,5 +83,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    @Override
+    public User updateUser(long id, UserUpdate userUpdate) {
+        User inDB = findById(id);
+        inDB.setUsername(userUpdate.username());
+        return userRepository.save(inDB);
     }
 }

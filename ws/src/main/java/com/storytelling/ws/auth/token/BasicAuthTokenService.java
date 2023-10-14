@@ -31,16 +31,18 @@ public class BasicAuthTokenService implements TokenService {
 
     @Override
     public User verifyToken(String authorizationHeader) {
+        User inDB = null;
         if (authorizationHeader == null) return null;
-
-        String base64Encoded = authorizationHeader.split("Basic ")[1];
-        String decoded = new String(Base64.getDecoder().decode(base64Encoded));
-        String[] credentials = decoded.split(":");
-        String email = credentials[0];
-        String password = credentials[1];
-        User inDB = userService.findByEmail(email);
-        if (inDB == null) return null;
-        if (!passwordEncoder.matches(password, inDB.getPassword())) return null;
+        if (authorizationHeader.contains("Basic ")) {
+            String base64Encoded = authorizationHeader.split("Basic ")[1];
+            String decoded = new String(Base64.getDecoder().decode(base64Encoded));
+            String[] credentials = decoded.split(":");
+            String email = credentials[0];
+            String password = credentials[1];
+            inDB = userService.findByEmail(email);
+            if (inDB == null) return null;
+            if (!passwordEncoder.matches(password, inDB.getPassword())) return null;
+        }
         return  inDB;
     }
 }
