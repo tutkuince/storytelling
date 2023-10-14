@@ -6,5 +6,6 @@
   "passwordRepeat": "Şifre Tekrari",
   "passwordMismatch": "Şifreniz Eşleşmiyor",
   "genericError": "Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.",
-  "login": "Giris yap"
+  "login": "Giris yap",
+  "logout": "Cikis yap"
 }

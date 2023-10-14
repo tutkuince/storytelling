@@ -43,7 +43,7 @@ export const Navbar = () => {
                   className="nav-link text-white px-2"
                 >
                   <ProfileImage width={30} />
-                  <span className="ms-1">{authState.username}</span>
+                  <span className="px-2">{authState.username}</span>
                 </Link>
               </li>
               <li className="nav-item align-middle">
@@ -52,7 +52,7 @@ export const Navbar = () => {
                   role="button"
                   onClick={onClickLogout}
                 >
-                  Logout
+                  {t("logout")}
                 </span>
               </li>
             </>
