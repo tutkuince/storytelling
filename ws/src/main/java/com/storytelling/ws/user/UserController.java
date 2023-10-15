@@ -5,13 +5,13 @@ import com.storytelling.ws.shared.Messages;
 import com.storytelling.ws.user.dto.UserCreate;
 import com.storytelling.ws.user.dto.UserDTO;
 import com.storytelling.ws.user.dto.UserUpdate;
-import com.storytelling.ws.user.exception.AuthorizationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,10 +52,8 @@ public class UserController {
     }
 
     @PutMapping("/v1/users/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate, @AuthenticationPrincipal CurrentUser currentUser) {
-        if (currentUser.getId() != id) {
-            throw new AuthorizationException();
-        }
+    @PreAuthorize("#id == principal.id")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable long id, @Valid @RequestBody UserUpdate userUpdate) {
         UserDTO userDTO = new UserDTO(userService.updateUser(id, userUpdate));
         return ResponseEntity.ok(userDTO);
     }

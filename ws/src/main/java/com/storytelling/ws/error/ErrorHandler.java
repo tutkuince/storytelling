@@ -2,7 +2,10 @@ package com.storytelling.ws.error;
 
 import com.storytelling.ws.auth.exception.AuthenticationException;
 import com.storytelling.ws.shared.Messages;
-import com.storytelling.ws.user.exception.*;
+import com.storytelling.ws.user.exception.ActivationNotificationException;
+import com.storytelling.ws.user.exception.InvalidTokenException;
+import com.storytelling.ws.user.exception.NotUniqueEmailException;
+import com.storytelling.ws.user.exception.UserNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +26,7 @@ public class ErrorHandler {
             ActivationNotificationException.class,
             InvalidTokenException.class,
             UserNotFoundException.class,
-            AuthenticationException.class,
-            AuthorizationException.class
-
+            AuthenticationException.class
     })
     ResponseEntity<ApiError> handleMethodArgNotValidEx(Exception exception, HttpServletRequest request) {
         ApiError apiError = new ApiError();
@@ -52,8 +53,6 @@ public class ErrorHandler {
             apiError.setStatus(404);
         } else if (exception instanceof AuthenticationException) {
             apiError.setStatus(401);
-        } else if (exception instanceof AuthorizationException) {
-            apiError.setStatus(403);
         }
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
