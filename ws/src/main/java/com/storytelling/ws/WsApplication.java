@@ -5,10 +5,8 @@ import com.storytelling.ws.user.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
@@ -23,8 +21,7 @@ public class WsApplication {
 
     @Bean
     @Profile("dev")
-    CommandLineRunner userCreator(UserRepository userRepository) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    CommandLineRunner userCreator(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         List<User> users = new ArrayList<>();
         return new CommandLineRunner() {
             @Override

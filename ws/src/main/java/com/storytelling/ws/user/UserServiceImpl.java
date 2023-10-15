@@ -1,5 +1,6 @@
 package com.storytelling.ws.user;
 
+import com.storytelling.ws.configuration.CurrentUser;
 import com.storytelling.ws.email.EmailService;
 import com.storytelling.ws.user.dto.UserUpdate;
 import com.storytelling.ws.user.exception.ActivationNotificationException;
@@ -11,7 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,12 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private EmailService emailService;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Autowired
     public void setEmailService(EmailService emailService) {
@@ -52,7 +58,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String encodePassword(String password) {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(password);
     }
 
@@ -73,11 +78,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findAll(Pageable page, User loggedInUser) {
-        if (loggedInUser == null) {
+    public Page<User> findAll(Pageable page, CurrentUser currentUser) {
+        if (currentUser == null) {
             return userRepository.findAll(page);
         }
-        return userRepository.findByIdNot(loggedInUser.getId(), page);
+        return userRepository.findByIdNot(currentUser.getId(), page);
     }
 
     @Override

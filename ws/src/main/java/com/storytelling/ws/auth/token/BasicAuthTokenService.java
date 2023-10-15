@@ -4,7 +4,6 @@ import com.storytelling.ws.auth.dto.Credentials;
 import com.storytelling.ws.user.User;
 import com.storytelling.ws.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +13,16 @@ import java.util.Base64;
 public class BasicAuthTokenService implements TokenService {
 
     private final UserService userService;
-
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public BasicAuthTokenService(UserService userService) {
         this.userService = userService;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
