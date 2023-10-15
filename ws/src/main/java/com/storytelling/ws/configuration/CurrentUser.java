@@ -13,6 +13,7 @@ public class CurrentUser implements UserDetails {
     private long id;
     private String username;
     private String password;
+    private boolean enabled;
 
     public CurrentUser(User user) {
         this.id = user.getId();
@@ -34,6 +35,10 @@ public class CurrentUser implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override
@@ -68,15 +73,6 @@ public class CurrentUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "CurrentUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return this.enabled;
     }
 }

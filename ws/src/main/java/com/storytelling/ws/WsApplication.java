@@ -34,6 +34,12 @@ public class WsApplication {
                     user.setActive(true);
                     users.add(user);
                 }
+                User user = new User();
+                user.setUsername("user26");
+                user.setEmail("user26@mail.com");
+                user.setPassword(passwordEncoder.encode("Password1"));
+                user.setActive(false);
+                users.add(user);
                 userRepository.saveAll(users);
             }
         };
